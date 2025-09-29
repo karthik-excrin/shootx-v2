@@ -1,0 +1,32 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "9926bfd9a0eaa591073dd1f8adfd9439"
+name = "Dev-App"
+application_url = "https://fy-ward-cm-combination.trycloudflare.com"
+embedded = true
+handle = "dev-app-branch"
+
+[webhooks]
+api_version = "2025-01"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/uninstalled" ]
+  uri = "/webhooks/app/uninstalled"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks/app/scopes_update"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_customers,read_fulfillments,read_locations,read_orders,read_returns,read_shipping,write_assigned_fulfillment_orders,write_customers,write_fulfillments,write_merchant_managed_fulfillment_orders,write_orders,write_products,write_returns,write_third_party_fulfillment_orders"
+
+[auth]
+redirect_urls = [
+  "https://fy-ward-cm-combination.trycloudflare.com/auth/callback",
+  "https://fy-ward-cm-combination.trycloudflare.com/auth/shopify/callback",
+  "https://fy-ward-cm-combination.trycloudflare.com/api/auth/callback"
+]
+
+[pos]
+embedded = false

@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Session {
+  id          String    @id
+  shop        String
+  state       String
+  isOnline    Boolean   @default(false)
+  scope       String?
+  expires     DateTime?
+  accessToken String
+  userId      BigInt?
+  firstName   String?
+  lastName    String?
+  email       String?
+  accountOwner Boolean  @default(false)
+  locale      String?
+  collaborator Boolean? @default(false)
+  emailVerified Boolean? @default(false)
+}
+
+model Shop {
+  id                String   @id @default(cuid())
+  shopId            String   @unique
+  shopDomain        String   @unique
+  isActive          Boolean  @default(true)
+  tryOnEnabled      Boolean  @default(true)
+  buttonText        String   @default("Try On")
+  buttonColor       String   @default("#007acc")
+  popupTitle        String   @default("Virtual Try-On")
+  allowedFileTypes  String   @default("image/jpeg,image/png,image/webp")
+  maxFileSize       Int      @default(5242880) // 5MB in bytes
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  tryOnRequests TryOnRequest[]
+}
+
+model TryOnRequest {
+  id              String   @id @default(cuid())
+  shopId          String
+  productId       String
+  productTitle    String
+  customerImage   String   // URL or base64
+  productImage    String   // URL of product image
+  resultImage     String?  // Generated try-on result
+  status          String   @default("processing") // processing, completed, failed
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  shop Shop @relation(fields: [shopId], references: [shopId])
+  
+  @@index([shopId])
+  @@index([productId])
+}
+
+model Product {
+  id            String   @id @default(cuid())
+  shopId        String
+  productId     String
+  title         String
+  image         String
+  tryOnEnabled  Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@unique([shopId, productId])
+  @@index([shopId])
+}
