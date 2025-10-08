@@ -21,10 +21,15 @@ export default defineConfig({
     },
   },
   ssr: {
-    noExternal: ["@prisma/client"],
+    noExternal: ["@prisma/client", "@shopify/shopify-app-remix", "@shopify/polaris"],
   },
   optimizeDeps: {
     exclude: ["@prisma/client"],
-    include: ["@shopify/polaris", "@shopify/shopify-app-remix"],
+    esbuildOptions: {
+      target: "esnext",
+      supported: {
+        "import-attributes": true,
+      },
+    },
   },
 });
