@@ -3,14 +3,27 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  esbuild: {
-    target: 'esnext'
-  },
   plugins: [
     remix({
       ignoredRouteFiles: ["**/.*"],
-      serverDependenciesToBundle: ["@prisma/client"],
+      future: {
+        v3_fetcherPersist: true,
+        v3_relativeSplatPath: true,
+        v3_throwAbortReason: true,
+      },
     }),
     tsconfigPaths(),
   ],
+  esbuild: {
+    target: "es2022",
+    supported: {
+      "import-attributes": true,
+    },
+  },
+  ssr: {
+    noExternal: ["@prisma/client"],
+  },
+  optimizeDeps: {
+    exclude: ["@prisma/client"],
+  },
 });
