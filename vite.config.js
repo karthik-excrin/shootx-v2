@@ -25,6 +25,6 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: ["@prisma/client"],
-    include: ["@shopify/polaris"],
+    include: ["@shopify/polaris", "@shopify/shopify-app-remix"],
   },
 });
