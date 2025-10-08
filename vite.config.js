@@ -15,7 +15,7 @@ export default defineConfig({
     tsconfigPaths(),
   ],
   esbuild: {
-    target: "es2022",
+    target: "esnext",
     supported: {
       "import-attributes": true,
     },
